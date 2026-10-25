@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Variables Ambientales – TEC San Carlos</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b7a75">
+<link rel="icon" href="icon-192.png">
+</head>
+<body>
+<header>
+  <h1>Consulta de variables ambientales<small>TEC San Carlos · Santa Clara, Huetar Norte</small></h1>
+  <label class="fsel">Datos:
+    <select id="fuente-sel" aria-label="Fuente de datos">
+      <option value="real">Clima real (se actualiza solo)</option>
+      <option value="simulado">Datos simulados del proyecto</option>
+    </select>
+  </label>
+  <span id="fuente" class="badge">Cargando datos…</span>
+  <button type="button" id="tema" class="icon-btn" aria-pressed="false">Modo oscuro</button>
+</header>
+
+<main>
+  <form id="form" class="card" novalidate autocomplete="off">
+    <fieldset id="fs-ubic">
+      <legend>Mi ubicación</legend>
+      <button type="button" class="icon-btn" id="b-ubic" style="width:100%">Obtener mi ubicación</button>
+      <div id="ubic" class="ubic" aria-live="polite"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>¿Qué desea consultar?</legend>
+      <div class="seg" role="radiogroup">
+        <label><input type="radio" name="tipo" value="hora" checked>Promedio por hora<span>Evolución durante un día específico</span></label>
+        <label><input type="radio" name="tipo" value="dia">Promedio por día<span>Comparación dentro de un rango de fechas</span></label>
+        <label><input type="radio" name="tipo" value="extremos">Máximo y mínimo histórico<span>Valores extremos de todo el registro</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend id="lg-var">Variables</legend>
+      <details class="dd" id="dd-var">
+        <summary id="dd-resumen">Seleccione una o más variables</summary>
+        <div class="dd-list" id="dd-lista" aria-labelledby="lg-var"></div>
+      </details>
+    </fieldset>
+
+    <fieldset id="fs-dia">
+      <div class="field"><label class="lbl" for="f-dia">Día a consultar</label>
+        <input type="date" id="f-dia"><small id="rango-hint"></small></div>
+    </fieldset>
+
+    <fieldset id="fs-rango" hidden>
+      <div class="row2">
+        <div class="field"><label class="lbl" for="f-desde">Desde</label><input type="date" id="f-desde"></div>
+        <div class="field"><label class="lbl" for="f-hasta">Hasta</label><input type="date" id="f-hasta"></div>
+      </div>
+      <small class="hint" id="rango-hint2"></small>
+    </fieldset>
+
+    <fieldset id="fs-ext" hidden>
+      <p class="hint" id="ext-hint" style="margin:0">Se analiza todo el registro disponible.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Estadísticas a mostrar</legend>
+      <label class="switch">Promedio<input type="checkbox" data-stat="prom" checked></label>
+      <label class="switch">Máximo<input type="checkbox" data-stat="max" checked></label>
+      <label class="switch">Mínimo<input type="checkbox" data-stat="min" checked></label>
+      <label class="switch">Desviación estándar<input type="checkbox" data-stat="sd"></label>
+    </fieldset>
+
+    <fieldset>
+      <label class="switch">Excluir valores atípicos<input type="checkbox" id="f-atip"></label>
+      <small class="hint">Criterio del rango intercuartílico (1,5 × IQR).</small>
+    </fieldset>
+
+    <button type="submit" class="primary" id="ejecutar" disabled>Calcular y graficar</button>
+    <ul class="errors" id="errores" aria-live="polite"></ul>
+  </form>
+
+  <section id="col2">
+    <div id="actual"></div>
+    <div id="results">
+      <div class="card empty" id="vacio">Elija el tipo de consulta, las variables y las fechas, y presione «Calcular y graficar».</div>
+    </div>
+  </section>
+</main>
+<footer id="pie" class="note" style="text-align:center;padding:4px 12px 18px" hidden>Datos meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (licencia CC BY 4.0)</footer>
+
+<script src="config.js"></script>
+<script src="datos_locales.js"></script>
+<script src="charts.js"></script>
+<script src="pdf.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
